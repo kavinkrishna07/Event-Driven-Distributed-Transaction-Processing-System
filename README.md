@@ -2,14 +2,17 @@
 
 A Java 17-compatible Spring Boot + React flash-sale storefront that teaches fair queuing, caching, asynchronous events, and safe inventory updates. It uses your local MySQL server for real demo products and paid orders; **it does not need Kafka or Redis installed**.
 
-## Start on Windows
+## Run the frontend and backend separately
 
-1. Make sure the **MySQL80** Windows service is running. The app connects as `root` to `127.0.0.1` and creates a `brightcart` database if needed. Change `DB_USERNAME` or `DB_URL` in your environment if your local MySQL setup differs.
-2. From the repository root run `.\start.ps1` in PowerShell. The first run downloads Maven into your user `.m2` cache, installs the React packages, then opens separate backend and frontend windows. The backend lives in `backend/`; the frontend lives in `frontend/`.
-3. Enter your MySQL root password at the hidden prompt. The password is read from `DB_PASSWORD` if you already set that environment variable; it is not stored in the project.
-4. Open **http://127.0.0.1:5173**.
+The repository is organized into two independent projects: `backend/` (Spring Boot API) and `frontend/` (React/Vite app).
 
-The launcher uses an installed JDK 17 or newer to compile Java 17-compatible bytecode. To start either side separately, run `npm install; npm run dev` from `frontend/`, or run `.\mvnw.ps1 spring-boot:run` from `backend/` after setting the `DB_PASSWORD` environment variable.
+### Backend
+
+Requires JDK 17 or newer and MySQL. Start the **MySQL80** Windows service; the app connects as `root` to `127.0.0.1` and creates a `brightcart` database if needed. From `backend/`, run `.\mvnw.ps1 spring-boot:run` in PowerShell. Set `DB_PASSWORD` in the environment first, and change `DB_USERNAME` or `DB_URL` if your local MySQL setup differs. The Maven wrapper downloads Maven into your user `.m2` cache on first use.
+
+### Frontend
+
+Requires Node.js and npm. From `frontend/`, run `npm install`, then `npm run dev`. Open **http://127.0.0.1:5173**. Vite forwards `/api` requests to the backend at `http://127.0.0.1:8080`.
 
 ## What the demo does
 
@@ -19,7 +22,7 @@ The launcher uses an installed JDK 17 or newer to compile Java 17-compatible byt
 - Paid orders and inventory changes are sent to a bounded, asynchronous, process-local **Kafka-style event queue** with a background consumer.
 - The launch-queue button assigns a FIFO demo ticket to a shopper trying to buy a product with fewer than 10 units. The ticket illustrates queue position; it does not reserve inventory or block checkout.
 - The “10 million shoppers / 100 items” panel is a design illustration, not a traffic generator.
-- If MySQL is unavailable or rejects the credentials, the storefront still shows all 20 sample products. Cart, queue tickets, and checkout then run in clearly labeled browser-only preview mode; they do not create a real payment or MySQL order. The launcher reads `DB_USERNAME` and `DB_PASSWORD` from your PowerShell environment when set.
+- If MySQL is unavailable or rejects the credentials, the storefront still shows all 20 sample products. Cart, queue tickets, and checkout then run in clearly labeled browser-only preview mode; they do not create a real payment or MySQL order.
 
 ## Real-world scaling notes
 
