@@ -5,11 +5,11 @@ A Java 17-compatible Spring Boot + React flash-sale storefront that teaches fair
 ## Start on Windows
 
 1. Make sure the **MySQL80** Windows service is running. The app connects as `root` to `127.0.0.1` and creates a `brightcart` database if needed. Change `DB_USERNAME` or `DB_URL` in your environment if your local MySQL setup differs.
-2. From this folder run `.\start.ps1` in PowerShell. The first run downloads Maven into your user `.m2` cache, installs the React packages, then opens separate backend and frontend windows.
+2. From the repository root run `.\start.ps1` in PowerShell. The first run downloads Maven into your user `.m2` cache, installs the React packages, then opens separate backend and frontend windows. The backend lives in `backend/`; the frontend lives in `frontend/`.
 3. Enter your MySQL root password at the hidden prompt. The password is read from `DB_PASSWORD` if you already set that environment variable; it is not stored in the project.
 4. Open **http://127.0.0.1:5173**.
 
-The launcher uses an installed JDK 17 or newer to compile Java 17-compatible bytecode. You can also start the frontend separately with `npm install; npm run dev`; start the backend from PowerShell after setting the `DB_PASSWORD` environment variable with `.\mvnw.ps1 spring-boot:run`.
+The launcher uses an installed JDK 17 or newer to compile Java 17-compatible bytecode. To start either side separately, run `npm install; npm run dev` from `frontend/`, or run `.\mvnw.ps1 spring-boot:run` from `backend/` after setting the `DB_PASSWORD` environment variable.
 
 ## What the demo does
 

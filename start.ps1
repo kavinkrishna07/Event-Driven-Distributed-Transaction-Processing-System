@@ -30,9 +30,9 @@ if ($null -eq $mysql -or $mysql.Status -ne "Running") {
     throw "MySQL80 is not running. Start the MySQL service, then run this script again."
 }
 
-if (-not (Test-Path -LiteralPath (Join-Path $projectRoot "node_modules"))) {
+if (-not (Test-Path -LiteralPath (Join-Path $projectRoot "frontend\node_modules"))) {
     Write-Host "Installing the frontend dependencies..."
-    npm install
+    npm --prefix (Join-Path $projectRoot "frontend") install
     if ($LASTEXITCODE -ne 0) { throw "npm install failed." }
 }
 
@@ -54,7 +54,7 @@ try {
     $health = $null
 }
 if ($null -eq $health) {
-    $backend = Start-Process powershell.exe -PassThru -WorkingDirectory $projectRoot -ArgumentList @(
+    $backend = Start-Process powershell.exe -PassThru -WorkingDirectory (Join-Path $projectRoot "backend") -ArgumentList @(
         "-NoExit", "-ExecutionPolicy", "Bypass", "-Command", "& '.\mvnw.ps1' spring-boot:run"
     )
 }
@@ -67,7 +67,7 @@ try {
     $page = $null
 }
 if ($null -eq $page) {
-    $frontend = Start-Process powershell.exe -PassThru -WorkingDirectory $projectRoot -ArgumentList @(
+    $frontend = Start-Process powershell.exe -PassThru -WorkingDirectory (Join-Path $projectRoot "frontend") -ArgumentList @(
         "-NoExit", "-ExecutionPolicy", "Bypass", "-Command", "npm run dev"
     )
 }
