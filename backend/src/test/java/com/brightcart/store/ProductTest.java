@@ -17,6 +17,6 @@ class ProductTest {
     }
 
     private Product productWithStock(int stock) {
-        return new Product(1, "Demo", "Home", "Demo product", BigDecimal.ONE, stock, "✨");
+        return new Product(1, "Demo", "Home", "Demo product", BigDecimal.ONE, stock);
     }
 }

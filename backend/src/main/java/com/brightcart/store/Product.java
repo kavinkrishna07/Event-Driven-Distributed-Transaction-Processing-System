@@ -8,8 +8,7 @@ public record Product(
         String category,
         String description,
         BigDecimal price,
-        int stock,
-        String emoji
+        int stock
 ) {
     public String stockLabel() {
         return stock < 10 ? "HOT" : stock < 25 ? "SELLING FAST" : null;

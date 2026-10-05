@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   ArrowDownRight, ArrowRight, ArrowUpRight, Check, ChevronDown, Clock3,
-  Flame, Heart, Minus, Plus, Radio, Search, ShieldCheck, ShoppingBag,
+  Database, Flame, Heart, Minus, Plus, Radio, Search, ShieldCheck, ShoppingBag,
   Sparkles, Ticket, X, Zap,
 } from "lucide-react";
 import "./style.css";
@@ -11,26 +11,26 @@ const money = (amount) =>
   new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(amount);
 
 const DEMO_PRODUCTS = [
-  { id: 1, name: "Airwave Headphones", category: "Audio", description: "Cushioned sound, all-day comfort.", price: 2499, stock: 6, emoji: "🎧" },
-  { id: 2, name: "Orbit Smart Watch", category: "Wearables", description: "Your day, beautifully in sync.", price: 4999, stock: 8, emoji: "⌚" },
-  { id: 3, name: "Mini Boom Speaker", category: "Audio", description: "Big sound. Take it anywhere.", price: 1799, stock: 4, emoji: "🔊" },
-  { id: 4, name: "Lumen Desk Lamp", category: "Home", description: "Warm light for your best ideas.", price: 1299, stock: 18, emoji: "💡" },
-  { id: 5, name: "Cloud Knit Throw", category: "Home", description: "A little extra cozy for the sofa.", price: 1899, stock: 42, emoji: "🧶" },
-  { id: 6, name: "Trailblazer Bottle", category: "Lifestyle", description: "Cold sips, wherever the day goes.", price: 699, stock: 76, emoji: "🧴" },
-  { id: 7, name: "Studio Wireless Mouse", category: "Tech", description: "A precise click, minus the clutter.", price: 1499, stock: 31, emoji: "🖱️" },
-  { id: 8, name: "Sunday Coffee Set", category: "Kitchen", description: "Your slow morning, sorted.", price: 1199, stock: 23, emoji: "☕" },
-  { id: 9, name: "Pocket Instant Camera", category: "Tech", description: "Make the good moments tangible.", price: 5799, stock: 7, emoji: "📸" },
-  { id: 10, name: "Everyday Canvas Tote", category: "Lifestyle", description: "Room for the essentials and then some.", price: 499, stock: 90, emoji: "👜" },
-  { id: 11, name: "Citrus Skincare Kit", category: "Beauty", description: "A fresh start for your routine.", price: 999, stock: 13, emoji: "🍊" },
-  { id: 12, name: "Retro Game Controller", category: "Tech", description: "One more round? Absolutely.", price: 2199, stock: 5, emoji: "🎮" },
-  { id: 13, name: "Crisp Cotton Sheets", category: "Home", description: "The bedtime upgrade you deserve.", price: 3299, stock: 27, emoji: "🛏️" },
-  { id: 14, name: "Weekend Runner Shoes", category: "Style", description: "Light steps. Long weekends.", price: 3899, stock: 34, emoji: "👟" },
-  { id: 15, name: "Matcha Starter Kit", category: "Kitchen", description: "Whisk up a brighter morning.", price: 1599, stock: 9, emoji: "🍵" },
-  { id: 16, name: "Sculpted Ceramic Vase", category: "Home", description: "A small detail that changes a room.", price: 1399, stock: 16, emoji: "🏺" },
-  { id: 17, name: "Little Plant Bundle", category: "Home", description: "Three leafy roommates, no drama.", price: 899, stock: 52, emoji: "🪴" },
-  { id: 18, name: "Paperback Reading Light", category: "Lifestyle", description: "One more chapter, without waking anyone.", price: 799, stock: 21, emoji: "📚" },
-  { id: 19, name: "Soft Serve Phone Case", category: "Tech", description: "Drop protection with a softer side.", price: 599, stock: 63, emoji: "📱" },
-  { id: 20, name: "Golden Hour Sunglasses", category: "Style", description: "A little sunshine, wherever you are.", price: 1099, stock: 11, emoji: "🕶️" },
+  { id: 1, name: "Airwave Headphones", category: "Audio", description: "Cushioned sound, all-day comfort.", price: 2499, stock: 6 },
+  { id: 2, name: "Orbit Smart Watch", category: "Wearables", description: "Your day, beautifully in sync.", price: 4999, stock: 8 },
+  { id: 3, name: "Mini Boom Speaker", category: "Audio", description: "Big sound. Take it anywhere.", price: 1799, stock: 4 },
+  { id: 4, name: "Lumen Desk Lamp", category: "Home", description: "Warm light for your best ideas.", price: 1299, stock: 18 },
+  { id: 5, name: "Cloud Knit Throw", category: "Home", description: "A little extra cozy for the sofa.", price: 1899, stock: 42 },
+  { id: 6, name: "Trailblazer Bottle", category: "Lifestyle", description: "Cold sips, wherever the day goes.", price: 699, stock: 76 },
+  { id: 7, name: "Studio Wireless Mouse", category: "Tech", description: "A precise click, minus the clutter.", price: 1499, stock: 31 },
+  { id: 8, name: "Sunday Coffee Set", category: "Kitchen", description: "Your slow morning, sorted.", price: 1199, stock: 23 },
+  { id: 9, name: "Pocket Instant Camera", category: "Tech", description: "Make the good moments tangible.", price: 5799, stock: 7 },
+  { id: 10, name: "Everyday Canvas Tote", category: "Lifestyle", description: "Room for the essentials and then some.", price: 499, stock: 90 },
+  { id: 11, name: "Citrus Skincare Kit", category: "Beauty", description: "A fresh start for your routine.", price: 999, stock: 13 },
+  { id: 12, name: "Retro Game Controller", category: "Tech", description: "One more round? Absolutely.", price: 2199, stock: 5 },
+  { id: 13, name: "Crisp Cotton Sheets", category: "Home", description: "The bedtime upgrade you deserve.", price: 3299, stock: 27 },
+  { id: 14, name: "Weekend Runner Shoes", category: "Style", description: "Light steps. Long weekends.", price: 3899, stock: 34 },
+  { id: 15, name: "Matcha Starter Kit", category: "Kitchen", description: "Whisk up a brighter morning.", price: 1599, stock: 9 },
+  { id: 16, name: "Sculpted Ceramic Vase", category: "Home", description: "A small detail that changes a room.", price: 1399, stock: 16 },
+  { id: 17, name: "Little Plant Bundle", category: "Home", description: "Three leafy roommates, no drama.", price: 899, stock: 52 },
+  { id: 18, name: "Paperback Reading Light", category: "Lifestyle", description: "One more chapter, without waking anyone.", price: 799, stock: 21 },
+  { id: 19, name: "Soft Serve Phone Case", category: "Tech", description: "Drop protection with a softer side.", price: 599, stock: 63 },
+  { id: 20, name: "Golden Hour Sunglasses", category: "Style", description: "A little sunshine, wherever you are.", price: 1099, stock: 11 },
 ];
 
 class ApiUnavailableError extends Error {}
@@ -85,7 +85,7 @@ function ProductCard({ product, onAdd, onJoin, queued }) {
     <article className={`product-card${hot ? " product-card-hot" : ""}`}>
       <div className="product-art">
         <span className="art-orbit" />
-        <span className="product-emoji" aria-hidden="true">{product.emoji}</span>
+        <ShoppingBag className="product-mark-icon" aria-hidden="true" />
         <button className="favorite-button" aria-label={`Save ${product.name}`}><Heart size={16} /></button>
         {hot && <span className="stock-badge badge-hot"><Flame size={12} fill="currentColor" /> HOT</span>}
         {warm && <span className="stock-badge badge-warm"><Zap size={11} fill="currentColor" /> Selling fast</span>}
@@ -308,12 +308,12 @@ function Store() {
           </div>
           <div className="hero-art" aria-hidden="true">
             <div className="hero-sun" />
-            <div className="hero-sparkle hero-sparkle-a">✳</div>
-            <div className="hero-sparkle hero-sparkle-b">✦</div>
-            <div className="hero-product hero-product-main">🎧</div>
-            <div className="hero-product hero-product-small">🍊</div>
-            <div className="hero-product hero-product-tiny">🪴</div>
-            <div className="hero-sticker"><span>GOOD<br />STUFF</span><span className="sticker-star">✳</span></div>
+            <div className="hero-sparkle hero-sparkle-a"><Sparkles size={22} /></div>
+            <div className="hero-sparkle hero-sparkle-b"><Sparkles size={16} /></div>
+            <div className="hero-product hero-product-main"><ShoppingBag /></div>
+            <div className="hero-product hero-product-small"><Heart /></div>
+            <div className="hero-product hero-product-tiny"><Sparkles /></div>
+            <div className="hero-sticker"><span>GOOD<br />STUFF</span><Sparkles className="sticker-star" /></div>
             <div className="floating-note"><span className="note-icon"><Clock3 size={15} /></span><span><b>Queue ticket</b><small>Your place, no frantic taps</small></span></div>
           </div>
           <div className="hero-bottom">
@@ -392,11 +392,11 @@ function Store() {
             <div className="concept-list">
               <Concept icon={<span className="concept-icon redis">R</span>} title="Redis-style cache" detail="Repeat catalog reads come from a quick 5-second in-memory cache." stat={metrics ? `${metrics.cache.hits} cache hits` : "Warming up"} />
               <Concept icon={<span className="concept-icon kafka">K</span>} title="Kafka-style event queue" detail="Paid orders and stock changes enter an asynchronous event buffer." stat={metrics ? `${metrics.events.processed} events handled` : "Listening"} />
-              <Concept icon={<span className="concept-icon mysql">⌁</span>} title="MySQL keeps score" detail="Inventory decrements inside a transaction; the last item cannot sell twice." stat={metrics ? `${metrics.paidOrders} paid orders` : "Stock protected"} />
+              <Concept icon={<span className="concept-icon mysql"><Database size={17} /></span>} title="MySQL keeps score" detail="Inventory decrements inside a transaction; the last item cannot sell twice." stat={metrics ? `${metrics.paidOrders} paid orders` : "Stock protected"} />
             </div>
           </div>
         </section>
-        <section className="last-note"><span>GOOD THINGS COME TO THOSE WHO WAIT.</span><span>Keep it lovely. Keep it fair. <span className="last-heart">♥</span></span></section>
+        <section className="last-note"><span>GOOD THINGS COME TO THOSE WHO WAIT.</span><span>Keep it lovely. Keep it fair. <Heart className="last-heart" size={12} fill="currentColor" /></span></section>
       </main>
       <footer className="footer"><a className="brand footer-brand" href="#"><span className="brand-mark"><ShoppingBag size={18} /></span><span>brightcart<span className="brand-dot">.</span></span></a><span>A cheerful little systems-design demo.</span><a href="#discover">Back to the good stuff ↑</a></footer>
 
@@ -404,7 +404,7 @@ function Store() {
         <div className="modal-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) setCartOpen(false); }}>
           <section className="cart-modal" role="dialog" aria-modal="true" aria-labelledby="cart-title">
             <div className="modal-heading">
-              <div><div className="eyebrow section-eyebrow">{receipt ? "THAT WAS LOVELY" : "YOUR LITTLE FINDS"}</div><h2 id="cart-title">{receipt ? "All yours. ✨" : "Your bag."}</h2></div>
+              <div><div className="eyebrow section-eyebrow">{receipt ? "THAT WAS LOVELY" : "YOUR LITTLE FINDS"}</div><h2 id="cart-title">{receipt ? "All yours." : "Your bag."}</h2></div>
               <button className="close-button" onClick={() => setCartOpen(false)} aria-label="Close bag"><X size={19} /></button>
             </div>
             {receipt ? (
@@ -417,13 +417,13 @@ function Store() {
                 <button className="pay-button" onClick={() => setCartOpen(false)}>Back to the good stuff <ArrowRight size={16} /></button>
               </div>
             ) : cart.length === 0 ? (
-              <div className="empty-cart"><span>🛍️</span><h3>Your bag is taking a little break.</h3><p>Find something lovely and it’ll be waiting right here.</p><button className="pay-button" onClick={() => setCartOpen(false)}>Have a look around <ArrowRight size={16} /></button></div>
+              <div className="empty-cart"><span><ShoppingBag /></span><h3>Your bag is taking a little break.</h3><p>Find something lovely and it’ll be waiting right here.</p><button className="pay-button" onClick={() => setCartOpen(false)}>Have a look around <ArrowRight size={16} /></button></div>
             ) : (
               <>
                 <div className="cart-items">
                   {cart.map((item) => (
                     <div className="cart-item" key={item.id}>
-                      <span className="cart-item-emoji">{item.emoji}</span>
+                      <span className="cart-item-mark"><ShoppingBag aria-hidden="true" /></span>
                       <div className="cart-item-info"><b>{item.name}</b><span>{money(item.price)} each</span></div>
                       <div className="quantity-control">
                         <button onClick={() => adjustQuantity(item.id, -1)} aria-label={`Remove one ${item.name}`}><Minus size={13} /></button>

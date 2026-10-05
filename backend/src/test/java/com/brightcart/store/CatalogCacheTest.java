@@ -14,7 +14,7 @@ class CatalogCacheTest {
         CatalogCache cache = new CatalogCache();
         AtomicInteger loads = new AtomicInteger();
         List<Product> catalog = List.of(new Product(
-                1, "Demo", "Home", "Demo product", BigDecimal.ONE, 12, "✨"));
+                1, "Demo", "Home", "Demo product", BigDecimal.ONE, 12));
         CatalogCache.CatalogLoader loader = () -> {
             loads.incrementAndGet();
             return catalog;

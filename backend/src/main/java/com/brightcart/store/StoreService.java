@@ -41,30 +41,30 @@ public class StoreService implements ApplicationRunner {
             return;
         }
         Object[][] products = {
-                {"Airwave Headphones", "Audio", "Cushioned sound, all-day comfort.", 2499, 6, "🎧"},
-                {"Orbit Smart Watch", "Wearables", "Your day, beautifully in sync.", 4999, 8, "⌚"},
-                {"Mini Boom Speaker", "Audio", "Big sound. Take it anywhere.", 1799, 4, "🔊"},
-                {"Lumen Desk Lamp", "Home", "Warm light for your best ideas.", 1299, 18, "💡"},
-                {"Cloud Knit Throw", "Home", "A little extra cozy for the sofa.", 1899, 42, "🧶"},
-                {"Trailblazer Bottle", "Lifestyle", "Cold sips, wherever the day goes.", 699, 76, "🧴"},
-                {"Studio Wireless Mouse", "Tech", "A precise click, minus the clutter.", 1499, 31, "🖱️"},
-                {"Sunday Coffee Set", "Kitchen", "Your slow morning, sorted.", 1199, 23, "☕"},
-                {"Pocket Instant Camera", "Tech", "Make the good moments tangible.", 5799, 7, "📸"},
-                {"Everyday Canvas Tote", "Lifestyle", "Room for the essentials and then some.", 499, 90, "👜"},
-                {"Citrus Skincare Kit", "Beauty", "A fresh start for your routine.", 999, 13, "🍊"},
-                {"Retro Game Controller", "Tech", "One more round? Absolutely.", 2199, 5, "🎮"},
-                {"Crisp Cotton Sheets", "Home", "The bedtime upgrade you deserve.", 3299, 27, "🛏️"},
-                {"Weekend Runner Shoes", "Style", "Light steps. Long weekends.", 3899, 34, "👟"},
-                {"Matcha Starter Kit", "Kitchen", "Whisk up a brighter morning.", 1599, 9, "🍵"},
-                {"Sculpted Ceramic Vase", "Home", "A small detail that changes a room.", 1399, 16, "🏺"},
-                {"Little Plant Bundle", "Home", "Three leafy roommates, no drama.", 899, 52, "🪴"},
-                {"Paperback Reading Light", "Lifestyle", "One more chapter, without waking anyone.", 799, 21, "📚"},
-                {"Soft Serve Phone Case", "Tech", "Drop protection with a softer side.", 599, 63, "📱"},
-                {"Golden Hour Sunglasses", "Style", "A little sunshine, wherever you are.", 1099, 11, "🕶️"}
+                {"Airwave Headphones", "Audio", "Cushioned sound, all-day comfort.", 2499, 6},
+                {"Orbit Smart Watch", "Wearables", "Your day, beautifully in sync.", 4999, 8},
+                {"Mini Boom Speaker", "Audio", "Big sound. Take it anywhere.", 1799, 4},
+                {"Lumen Desk Lamp", "Home", "Warm light for your best ideas.", 1299, 18},
+                {"Cloud Knit Throw", "Home", "A little extra cozy for the sofa.", 1899, 42},
+                {"Trailblazer Bottle", "Lifestyle", "Cold sips, wherever the day goes.", 699, 76},
+                {"Studio Wireless Mouse", "Tech", "A precise click, minus the clutter.", 1499, 31},
+                {"Sunday Coffee Set", "Kitchen", "Your slow morning, sorted.", 1199, 23},
+                {"Pocket Instant Camera", "Tech", "Make the good moments tangible.", 5799, 7},
+                {"Everyday Canvas Tote", "Lifestyle", "Room for the essentials and then some.", 499, 90},
+                {"Citrus Skincare Kit", "Beauty", "A fresh start for your routine.", 999, 13},
+                {"Retro Game Controller", "Tech", "One more round? Absolutely.", 2199, 5},
+                {"Crisp Cotton Sheets", "Home", "The bedtime upgrade you deserve.", 3299, 27},
+                {"Weekend Runner Shoes", "Style", "Light steps. Long weekends.", 3899, 34},
+                {"Matcha Starter Kit", "Kitchen", "Whisk up a brighter morning.", 1599, 9},
+                {"Sculpted Ceramic Vase", "Home", "A small detail that changes a room.", 1399, 16},
+                {"Little Plant Bundle", "Home", "Three leafy roommates, no drama.", 899, 52},
+                {"Paperback Reading Light", "Lifestyle", "One more chapter, without waking anyone.", 799, 21},
+                {"Soft Serve Phone Case", "Tech", "Drop protection with a softer side.", 599, 63},
+                {"Golden Hour Sunglasses", "Style", "A little sunshine, wherever you are.", 1099, 11}
         };
         for (Object[] product : products) {
-            jdbc.update("INSERT INTO products (name, category, description, price, stock, emoji) VALUES (?, ?, ?, ?, ?, ?)",
-                    product[0], product[1], product[2], product[3], product[4], product[5]);
+            jdbc.update("INSERT INTO products (name, category, description, price, stock, emoji) VALUES (?, ?, ?, ?, ?, '')",
+                    product[0], product[1], product[2], product[3], product[4]);
         }
     }
 
@@ -73,7 +73,7 @@ public class StoreService implements ApplicationRunner {
     }
 
     public Product requireProduct(long id) {
-        return jdbc.query("SELECT id, name, category, description, price, stock, emoji FROM products WHERE id = ?",
+        return jdbc.query("SELECT id, name, category, description, price, stock FROM products WHERE id = ?",
                 result -> result.next() ? mapProduct(result) : null, id);
     }
 
@@ -152,14 +152,13 @@ public class StoreService implements ApplicationRunner {
     }
 
     private List<Product> loadProducts() {
-        return jdbc.query("SELECT id, name, category, description, price, stock, emoji FROM products ORDER BY id",
+        return jdbc.query("SELECT id, name, category, description, price, stock FROM products ORDER BY id",
                 (result, row) -> mapProduct(result));
     }
 
     private Product mapProduct(java.sql.ResultSet result) throws java.sql.SQLException {
         return new Product(result.getLong("id"), result.getString("name"), result.getString("category"),
-                result.getString("description"), result.getBigDecimal("price"), result.getInt("stock"),
-                result.getString("emoji"));
+                result.getString("description"), result.getBigDecimal("price"), result.getInt("stock"));
     }
 
     public record CheckoutRequest(String pin, List<CheckoutItem> items) {}
